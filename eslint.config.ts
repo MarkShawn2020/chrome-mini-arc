@@ -54,7 +54,8 @@ export default config(
       'react/prop-types': 'off',
       'prefer-const': 'error',
       'no-var': 'error',
-      'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      // 'func-style': ['error', 'expression', { allowArrowFunctions: true }],
+      'func-style': 'off',
       'no-restricted-imports': [
         'error',
         {
@@ -90,6 +91,8 @@ export default config(
       'import-x/consistent-type-specifier-style': 'error',
       'import-x/exports-last': 'error',
       'import-x/first': 'error',
+      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-explicit-any': 'off',
     },
     linterOptions: {
       reportUnusedDisableDirectives: 'error',

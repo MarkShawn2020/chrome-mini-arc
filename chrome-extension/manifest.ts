@@ -31,7 +31,23 @@ const manifest = {
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ['<all_urls>'],
-  permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel'],
+  permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel', 'clipboardWrite'],
+  commands: {
+    'copy-url-title': {
+      suggested_key: {
+        default: 'Ctrl+Shift+Y',
+        mac: 'Command+Shift+Y',
+      },
+      description: 'Copy current page URL and title',
+    },
+    'toggle-portable-search': {
+      suggested_key: {
+        default: 'Ctrl+Shift+S',
+        mac: 'Command+Shift+S',
+      },
+      description: 'Toggle portable search',
+    },
+  },
   options_page: 'options/index.html',
   background: {
     service_worker: 'background.js',
