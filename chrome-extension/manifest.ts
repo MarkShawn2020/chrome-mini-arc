@@ -31,7 +31,7 @@ const manifest = {
   version: packageJson.version,
   description: '__MSG_extensionDescription__',
   host_permissions: ['<all_urls>'],
-  permissions: ['storage', 'scripting', 'tabs', 'notifications', 'sidePanel', 'clipboardWrite'],
+  permissions: ['storage', 'scripting', 'tabs', 'activeTab', 'notifications', 'sidePanel', 'clipboardWrite'],
   commands: {
     'copy-url-title': {
       suggested_key: {

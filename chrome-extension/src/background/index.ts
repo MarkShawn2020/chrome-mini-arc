@@ -9,7 +9,7 @@ async function copyUrlAndTitle() {
     // 获取当前激活的标签页
     const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    if (!tab || !tab.url || !tab.title) {
+    if (!tab || !tab.url || !tab.title || !tab.id) {
       console.error('无法获取当前标签页信息');
       return;
     }
@@ -17,10 +17,24 @@ async function copyUrlAndTitle() {
     // 格式化为 Markdown 链接格式
     const textToCopy = `[${tab.title}](${tab.url})`;
 
-    // 写入剪贴板
-    await navigator.clipboard.writeText(textToCopy);
+    // 通过在标签页中执行脚本来复制文本
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      func: text => {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        return true;
+      },
+      args: [textToCopy],
+    });
 
-    // 可选：显示通知提示用户已复制
+    // 显示通知提示用户已复制
     chrome.notifications.create({
       type: 'basic',
       iconUrl: 'icon-128.png',
