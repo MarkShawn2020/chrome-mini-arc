@@ -22,9 +22,9 @@ export interface CopyFormatStorageType {
   subscribe: (callback: (state: CopyFormatStateType) => void) => () => void;
 }
 
-// 默认模板
+// 默认模板 - 注意纯文本模板中的分隔符变量
 const DEFAULT_TEMPLATES = {
-  plain: '{title}{separator}{url}', // 纯文本格式
+  plain: '{title}{separator}{url}', // 纯文本格式 - 使用{separator}模板变量
   markdown: '[{title}]({url})', // Markdown 格式
   html: '<a href="{url}">{title}</a>', // HTML 格式
   csv: '"{title}","{url}"', // CSV 格式

@@ -39,25 +39,7 @@ async function copyToClipboard(text: string, tabId: number, notificationMessage:
   }
 }
 
-/**
- * 应用模板到文本
- */
-function applyTemplate(
-  template: string,
-  data: Record<string, string>,
-  formatType?: string,
-  plainTextSeparator?: string,
-): string {
-  // 如果是纯文本格式且有分隔符，添加到数据中
-  if (formatType === 'plain' && plainTextSeparator !== undefined) {
-    data.separator = plainTextSeparator;
-  } else {
-    // 非纯文本格式时，空分隔符
-    data.separator = '';
-  }
-
-  return template.replace(/\{([^{}]+)\}/g, (match, key) => (data[key] !== undefined ? data[key] : match));
-}
+// 移除 applyTemplate 函数，直接在 copyUrlAndTitle 中实现模板替换逻辑
 
 /**
  * 只复制当前标签页的URL
@@ -91,22 +73,53 @@ async function copyUrlAndTitle() {
       return;
     }
 
-    // 获取用户配置的复制格式
+    // 获取最新的复制格式设置
     const copyFormat = await copyFormatStorage.get();
 
-    // 获取相应格式的模板
-    const template = copyFormat.templates[copyFormat.titleUrlFormat];
+    console.log('[Arc Mini] 当前复制格式设置:', {
+      formatType: copyFormat.titleUrlFormat,
+      plainTextSeparator: copyFormat.plainTextSeparator,
+      template: copyFormat.templates[copyFormat.titleUrlFormat],
+    });
 
-    // 应用模板，传入格式类型和纯文本分隔符
-    const textToCopy = applyTemplate(
-      template,
-      {
-        title: tab.title,
-        url: tab.url,
-      },
-      copyFormat.titleUrlFormat,
-      copyFormat.plainTextSeparator,
-    );
+    // 输入数据
+    const data = {
+      title: tab.title,
+      url: tab.url,
+    };
+
+    // 生成最终复制内容
+    let textToCopy = '';
+    const formatType = copyFormat.titleUrlFormat as 'plain' | 'markdown' | 'html' | 'csv';
+    const separator = copyFormat.plainTextSeparator || ' ';
+
+    // 根据不同格式处理
+    switch (formatType) {
+      case 'plain':
+        // 纯文本格式 - 直接使用分隔符连接
+        textToCopy = `${data.title}${separator}${data.url}`;
+        console.log('[Arc Mini] 纯文本格式使用分隔符:', JSON.stringify(separator));
+        break;
+
+      case 'markdown':
+        textToCopy = `[${data.title}](${data.url})`;
+        break;
+
+      case 'html':
+        textToCopy = `<a href="${data.url}">${data.title}</a>`;
+        break;
+
+      case 'csv':
+        textToCopy = `"${data.title}","${data.url}"`;
+        break;
+
+      default:
+        // 默认回退到确保安全处理
+        textToCopy = `${data.title} ${data.url}`;
+        break;
+    }
+
+    console.log('[Arc Mini] 最终复制内容:', textToCopy);
 
     // 复制到剪贴板
     await copyToClipboard(textToCopy, tab.id, '页面标题和链接已复制到剪贴板');
