@@ -39,8 +39,8 @@ const Popup = () => {
   };
 
   return (
-    <div className={cn('App h-full overflow-hidden', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
-      <header className={cn('App-header h-full overflow-y-auto py-2', isLight ? 'text-gray-900' : 'text-gray-100')}>
+    <div className={cn('App', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
+      <header className={cn('App-header py-2', isLight ? 'text-gray-900' : 'text-gray-100')}>
         <div className="mb-2 flex items-center">
           <button onClick={goGithubSite} className="flex-shrink-0">
             <img src={chrome.runtime.getURL(logo)} className="App-logo h-10 w-auto" alt="logo" />
@@ -51,7 +51,7 @@ const Popup = () => {
         {/* 复制格式设置组件 */}
         <CopyFormatSettings isLight={isLight} />
 
-        <div className="mt-3 flex justify-center gap-2">
+        <div className="mt-3 flex flex-col justify-center gap-2">
           <button
             className={cn(
               'rounded px-3 py-1 text-sm font-medium shadow hover:scale-105',

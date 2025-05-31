@@ -69,10 +69,15 @@ export function CopyFormatSettings({ isLight }: { isLight: boolean }) {
 
   // 快捷键提示文本
   const shortcutText = (
-    <span>
-      快捷键: <kbd className="rounded bg-gray-200 px-1 py-0.5 dark:bg-gray-600">Alt+Y</kbd> 复制链接，
-      <kbd className="rounded bg-gray-200 px-1 py-0.5 dark:bg-gray-600">Alt+Shift+Y</kbd> 复制标题和链接
-    </span>
+    <div className="flex flex-col gap-1">
+      <span>
+        <kbd className="rounded bg-gray-200 px-1 py-0.5 dark:bg-gray-600">Alt+Y</kbd> 复制链接
+      </span>
+
+      <span>
+        <kbd className="rounded bg-gray-200 px-1 py-0.5 dark:bg-gray-600">Alt+Shift+Y</kbd> 复制标题和链接
+      </span>
+    </div>
   );
 
   return (
