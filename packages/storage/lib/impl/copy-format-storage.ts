@@ -11,6 +11,8 @@ export interface CopyFormatStateType {
   templates: {
     [key in CopyFormatType]: string;
   };
+  // 纯文本模式下的分隔符
+  plainTextSeparator: string;
 }
 
 // 复制格式存储类型
@@ -22,7 +24,7 @@ export interface CopyFormatStorageType {
 
 // 默认模板
 const DEFAULT_TEMPLATES = {
-  plain: '{title} {url}', // 纯文本格式
+  plain: '{title}{separator}{url}', // 纯文本格式
   markdown: '[{title}]({url})', // Markdown 格式
   html: '<a href="{url}">{title}</a>', // HTML 格式
   csv: '"{title}","{url}"', // CSV 格式
@@ -34,6 +36,7 @@ const storage = createStorage<CopyFormatStateType>(
   {
     titleUrlFormat: 'markdown',
     templates: DEFAULT_TEMPLATES,
+    plainTextSeparator: ' ', // 默认使用空格分隔符
   },
   {
     storageEnum: StorageEnum.Local,

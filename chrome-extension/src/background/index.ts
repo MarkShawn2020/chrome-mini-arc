@@ -42,8 +42,21 @@ async function copyToClipboard(text: string, tabId: number, notificationMessage:
 /**
  * 应用模板到文本
  */
-function applyTemplate(template: string, data: Record<string, string>): string {
-  return template.replace(/\{([^{}]+)\}/g, (match, key) => data[key] || match);
+function applyTemplate(
+  template: string,
+  data: Record<string, string>,
+  formatType?: string,
+  plainTextSeparator?: string,
+): string {
+  // 如果是纯文本格式且有分隔符，添加到数据中
+  if (formatType === 'plain' && plainTextSeparator !== undefined) {
+    data.separator = plainTextSeparator;
+  } else {
+    // 非纯文本格式时，空分隔符
+    data.separator = '';
+  }
+
+  return template.replace(/\{([^{}]+)\}/g, (match, key) => (data[key] !== undefined ? data[key] : match));
 }
 
 /**
@@ -84,11 +97,16 @@ async function copyUrlAndTitle() {
     // 获取相应格式的模板
     const template = copyFormat.templates[copyFormat.titleUrlFormat];
 
-    // 应用模板
-    const textToCopy = applyTemplate(template, {
-      title: tab.title,
-      url: tab.url,
-    });
+    // 应用模板，传入格式类型和纯文本分隔符
+    const textToCopy = applyTemplate(
+      template,
+      {
+        title: tab.title,
+        url: tab.url,
+      },
+      copyFormat.titleUrlFormat,
+      copyFormat.plainTextSeparator,
+    );
 
     // 复制到剪贴板
     await copyToClipboard(textToCopy, tab.id, '页面标题和链接已复制到剪贴板');

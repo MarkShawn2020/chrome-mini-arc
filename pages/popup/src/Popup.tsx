@@ -39,26 +39,28 @@ const Popup = () => {
   };
 
   return (
-    <div className={cn('App', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
-      <header className={cn('App-header', isLight ? 'text-gray-900' : 'text-gray-100')}>
-        <button onClick={goGithubSite}>
-          <img src={chrome.runtime.getURL(logo)} className="App-logo" alt="logo" />
-        </button>
-        <h2 className="text-lg font-medium">Arc Mini Chrome Extension</h2>
+    <div className={cn('App h-full overflow-hidden', isLight ? 'bg-slate-50' : 'bg-gray-800')}>
+      <header className={cn('App-header h-full overflow-y-auto py-2', isLight ? 'text-gray-900' : 'text-gray-100')}>
+        <div className="mb-2 flex items-center">
+          <button onClick={goGithubSite} className="flex-shrink-0">
+            <img src={chrome.runtime.getURL(logo)} className="App-logo h-10 w-auto" alt="logo" />
+          </button>
+          <h2 className="ml-2 text-lg font-medium">Arc Mini</h2>
+        </div>
 
         {/* 复制格式设置组件 */}
         <CopyFormatSettings isLight={isLight} />
 
-        <div className="mt-4 flex gap-2">
+        <div className="mt-3 flex justify-center gap-2">
           <button
             className={cn(
-              'rounded px-4 py-1 font-bold shadow hover:scale-105',
+              'rounded px-3 py-1 text-sm font-medium shadow hover:scale-105',
               isLight ? 'bg-blue-200 text-black' : 'bg-gray-700 text-white',
             )}
             onClick={injectContentScript}>
             {t('injectButton')}
           </button>
-          <ToggleButton>{t('toggleTheme')}</ToggleButton>
+          <ToggleButton className="text-sm">{t('toggleTheme')}</ToggleButton>
         </div>
       </header>
     </div>

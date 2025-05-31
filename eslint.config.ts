@@ -93,6 +93,7 @@ export default config(
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
       'import-x/exports-last': 'off',
+      'jsx-a11y/label-has-associated-control': 'warn',
     },
     linterOptions: {
       reportUnusedDisableDirectives: 'error',
