@@ -35,15 +35,15 @@ const manifest = {
   commands: {
     'copy-url-title': {
       suggested_key: {
-        default: 'Ctrl+Shift+Y',
-        mac: 'Command+Shift+Y',
+        default: 'Alt+C',
+        mac: 'Alt+C',
       },
       description: 'Copy current page URL and title',
     },
     'toggle-portable-search': {
       suggested_key: {
-        default: 'Ctrl+Shift+S',
-        mac: 'Command+Shift+S',
+        default: 'Alt+S',
+        mac: 'Alt+S',
       },
       description: 'Toggle portable search',
     },

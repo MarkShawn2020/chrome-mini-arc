@@ -54,12 +54,30 @@ async function togglePortableSearch() {
 
 // 监听命令
 chrome.commands.onCommand.addListener(command => {
+  console.log('[Arc Mini] 快捷键命令被触发:', command);
+
   if (command === 'copy-url-title') {
+    console.log('[Arc Mini] 正在执行复制 URL 和标题...');
     copyUrlAndTitle();
   } else if (command === 'toggle-portable-search') {
+    console.log('[Arc Mini] 正在切换便携搜索框...');
     togglePortableSearch();
+  } else {
+    console.log('[Arc Mini] 未知命令:', command);
   }
 });
+
+// 注册服务工作线程启动时的日志
+const printCommands = async () => {
+  try {
+    const commands = await chrome.commands.getAll();
+    console.log('[Arc Mini] 已注册的快捷键命令:', commands);
+  } catch (error) {
+    console.error('[Arc Mini] 获取快捷键命令列表失败:', error);
+  }
+};
+
+printCommands();
 
 exampleThemeStorage.get().then(theme => {
   console.log('theme', theme);

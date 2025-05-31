@@ -1,7 +1,7 @@
 import { t } from '@extension/i18n';
 import { ToggleButton } from '@extension/ui';
 import { useEffect, useState, useRef } from 'react';
-import type { KeyboardEvent } from 'react';
+import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 
 // 便携搜索框组件
 function PortableSearch({ isVisible, onClose }: { isVisible: boolean; onClose: () => void }) {
@@ -14,7 +14,7 @@ function PortableSearch({ isVisible, onClose }: { isVisible: boolean; onClose: (
     }
   }, [isVisible]);
 
-  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (e: ReactKeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Escape') {
       onClose();
     } else if (e.key === 'Enter') {
@@ -51,19 +51,45 @@ export default function App() {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   useEffect(() => {
-    console.log('[Arc Mini] Content UI loaded');
+    console.log('[Arc Mini] Content UI loaded - 初始化便携搜索组件');
+
+    // 尝试访问 chrome API，确认内容脚本权限
+    if (typeof chrome !== 'undefined' && chrome.runtime) {
+      console.log('[Arc Mini] chrome.runtime API 可用');
+    } else {
+      console.error('[Arc Mini] chrome.runtime API 不可用!');
+    }
 
     // 监听来自背景脚本的消息
-    const handleMessage = (message: any) => {
+    const handleMessage = (message: any, sender: any, sendResponse: any) => {
+      console.log('[Arc Mini] 收到消息:', message, '来自:', sender);
+
       if (message.action === 'toggle-portable-search') {
-        setIsSearchVisible(prev => !prev);
+        console.log('[Arc Mini] 切换搜索框显示状态');
+        setIsSearchVisible(prev => {
+          const newState = !prev;
+          console.log('[Arc Mini] 搜索框新状态:', newState ? '显示' : '隐藏');
+          return newState;
+        });
+        // 发送响应确认消息已处理
+        sendResponse({ success: true });
+        return true; // 保持消息通道开放
       }
+
+      return false; // 默认返回值，如果没有处理消息
     };
 
+    // 注册消息监听器
+    console.log('[Arc Mini] 注册消息监听器');
     chrome.runtime.onMessage.addListener(handleMessage);
 
+    // 我们不再使用内容脚本的键盘监听，而是完全依赖 Chrome 命令 API
+    console.log('[Arc Mini] 使用官方 Chrome 命令 API 处理快捷键');
+
     return () => {
+      console.log('[Arc Mini] 移除消息监听器');
       chrome.runtime.onMessage.removeListener(handleMessage);
+      // 已移除键盘监听器
     };
   }, []);
 
