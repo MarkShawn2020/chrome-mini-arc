@@ -33,12 +33,18 @@ const manifest = {
   host_permissions: ['<all_urls>'],
   permissions: ['storage', 'scripting', 'tabs', 'activeTab', 'notifications', 'sidePanel', 'clipboardWrite'],
   commands: {
-    'copy-url-title': {
+    'copy-url': {
       suggested_key: {
         default: 'Alt+C',
         mac: 'Alt+C',
       },
-      description: 'Copy current page URL and title',
+      description: 'Copy current page URL only',
+    },
+    'copy-url-title': {
+      suggested_key: {
+        default: 'Alt+Shift+C',
+      },
+      description: 'Copy current page URL and title (format configurable)',
     },
     'toggle-portable-search': {
       suggested_key: {

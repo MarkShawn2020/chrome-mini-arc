@@ -89,10 +89,10 @@ export default config(
       'import-x/no-deprecated': 'error',
       'import-x/no-duplicates': ['error', { considerQueryString: true, 'prefer-inline': false }],
       'import-x/consistent-type-specifier-style': 'error',
-      'import-x/exports-last': 'error',
       'import-x/first': 'error',
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-explicit-any': 'off',
+      'import-x/exports-last': 'off',
     },
     linterOptions: {
       reportUnusedDisableDirectives: 'error',

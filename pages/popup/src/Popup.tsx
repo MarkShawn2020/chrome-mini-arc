@@ -1,4 +1,5 @@
 import '@src/Popup.css';
+import { CopyFormatSettings } from './components/CopyFormatSettings';
 import { t } from '@extension/i18n';
 import { PROJECT_URL_OBJECT, useStorage, withErrorBoundary, withSuspense } from '@extension/shared';
 import { exampleThemeStorage } from '@extension/storage';
@@ -43,18 +44,22 @@ const Popup = () => {
         <button onClick={goGithubSite}>
           <img src={chrome.runtime.getURL(logo)} className="App-logo" alt="logo" />
         </button>
-        <p>
-          Edit <code>pages/popup/src/Popup.tsx</code>
-        </p>
-        <button
-          className={cn(
-            'mt-4 rounded px-4 py-1 font-bold shadow hover:scale-105',
-            isLight ? 'bg-blue-200 text-black' : 'bg-gray-700 text-white',
-          )}
-          onClick={injectContentScript}>
-          {t('injectButton')}
-        </button>
-        <ToggleButton>{t('toggleTheme')}</ToggleButton>
+        <h2 className="text-lg font-medium">Arc Mini Chrome Extension</h2>
+
+        {/* 复制格式设置组件 */}
+        <CopyFormatSettings isLight={isLight} />
+
+        <div className="mt-4 flex gap-2">
+          <button
+            className={cn(
+              'rounded px-4 py-1 font-bold shadow hover:scale-105',
+              isLight ? 'bg-blue-200 text-black' : 'bg-gray-700 text-white',
+            )}
+            onClick={injectContentScript}>
+            {t('injectButton')}
+          </button>
+          <ToggleButton>{t('toggleTheme')}</ToggleButton>
+        </div>
       </header>
     </div>
   );
